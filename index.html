@@ -1,24 +1,298 @@
-<script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbye_Hl6_nUTJAlz3_6GPZtRC96gj4cWtxJEQyJndXi2YNCATBgtsOwXvFNJEI4lno2VbQ/exec"; // Replace with your deployed Apps Script Web App URL
-    const form = document.getElementById("contact-form");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riddhi Jaiswal - Portfolio</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html {scroll-behavior:smooth;}
+    body {
+      font-family:'Inter',sans-serif;
+      background:#0d1117;
+      color:#c9d1d9;
+      line-height:1.6;
+    }
 
-    form.addEventListener("submit", e => {
+    /* NAVBAR */
+    nav {
+      position:fixed;
+      top:0;left:0;width:100%;
+      background:#161b22;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0.8rem 1.2rem;
+      z-index:1000;
+      box-shadow:0 2px 4px rgba(0,0,0,0.4);
+    }
+    .nav-links {
+      display:flex;
+      gap:1rem;
+    }
+    .nav-links a {
+      color:#c9d1d9;
+      text-decoration:none;
+      padding:0.5rem 1rem;
+      font-weight:500;
+      transition:color 0.3s;
+    }
+    .nav-links a:hover {color:#58a6ff;}
+
+    /* Hamburger button */
+    .hamburger {
+      display:none;
+      font-size:1.5rem;
+      color:#c9d1d9;
+      cursor:pointer;
+      background:none;
+      border:none;
+    }
+
+    @media(max-width:768px){
+      .nav-links {
+        display:none;
+        flex-direction:column;
+        position:absolute;
+        top:60px; left:0;
+        width:100%;
+        background:#161b22;
+        border-top:1px solid #21262d;
+      }
+      .nav-links a {
+        text-align:center;
+        padding:1rem;
+        border-bottom:1px solid #21262d;
+      }
+      .nav-links.active {display:flex;}
+      .hamburger {display:block;}
+    }
+
+    /* HERO */
+    header {
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      background:#0d1117;
+      padding:2rem;
+    }
+    header h1 {
+      font-size:2.8rem;
+      font-weight:700;
+      color:#fff;
+      margin-bottom:0.5rem;
+    }
+    .typing {
+      font-family:'Fira Code', monospace;
+      font-size:1.2rem;
+      color:#58a6ff;
+      border-right:3px solid #58a6ff;
+      white-space:nowrap;
+      overflow:hidden;
+      width:24ch;
+      animation:typing 4s steps(24) infinite alternate, blink 0.7s infinite;
+    }
+    @keyframes typing {from{width:0} to{width:24ch}}
+    @keyframes blink {50%{border-color:transparent;}}
+    .social-links {
+      margin-top:1.5rem;
+    }
+    .social-links a {
+      color:#c9d1d9;
+      margin:0 10px;
+      font-size:1.5rem;
+      transition:color 0.3s;
+    }
+    .social-links a:hover {color:#58a6ff;}
+
+    /* SECTIONS */
+    section {
+      max-width:1000px;
+      margin:4rem auto;
+      padding:2rem;
+    }
+    h2 {
+      font-size:1.8rem;
+      margin-bottom:1.5rem;
+      border-bottom:2px solid #21262d;
+      padding-bottom:0.5rem;
+      color:#58a6ff;
+    }
+    .skills-list span {
+      display:inline-block;
+      background:#161b22;
+      padding:0.4rem 0.8rem;
+      margin:0.3rem;
+      border-radius:5px;
+      font-size:0.9rem;
+      font-family:'Fira Code', monospace;
+      color:#c9d1d9;
+    }
+    .project-card {
+      background:#161b22;
+      padding:1.5rem;
+      border-radius:10px;
+      margin-bottom:1rem;
+      border:1px solid #30363d;
+      transition:transform 0.3s, border 0.3s;
+    }
+    .project-card:hover {
+      transform:translateY(-3px);
+      border:1px solid #58a6ff;
+    }
+    .project-card h3 {
+      margin-bottom:0.5rem;
+      color:#58a6ff;
+    }
+
+    /* CONTACT */
+    .contact-form {
+      display:flex;
+      flex-direction:column;
+    }
+    .contact-form input,.contact-form textarea {
+      margin:0.6rem 0;
+      padding:0.9rem;
+      border:none;
+      border-radius:6px;
+      background:#161b22;
+      color:#c9d1d9;
+      font-family:'Inter',sans-serif;
+    }
+    .contact-form input:focus,.contact-form textarea:focus {
+      outline:1px solid #58a6ff;
+    }
+    .contact-form button {
+      background:#238636;
+      color:#fff;
+      padding:0.9rem;
+      border:none;
+      border-radius:6px;
+      font-size:1rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:background 0.3s;
+    }
+    .contact-form button:hover {background:#2ea043;}
+
+    footer {
+      text-align:center;
+      padding:1.5rem;
+      background:#161b22;
+      color:#8b949e;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <button class="hamburger"><i class="fas fa-bars"></i></button>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header>
+    <h1>Hello, I'm Riddhi Jaiswal</h1>
+    <div class="typing">Software Developer</div>
+    
+    <div class="social-links">
+      <a href="mailto:riddhijaiswal1406@gmail.com"><i class="fas fa-envelope"></i></a>
+      <a href="https://www.linkedin.com/in/riddhi-jaiswal-170243302/" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I’m an aspiring software and web developer from Varanasi, India. Passionate about building efficient solutions, clean user interfaces, and contributing to impactful projects. My goal is to continuously learn, improve, and apply my skills to real-world applications.</p>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-list">
+      <span>C</span><span>Java</span><span>JavaScript</span>
+      <span>HTML</span><span>CSS</span><span>Git</span>
+      <span>Problem Solving</span><span>Teamwork</span>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience">
+    <h2>Experience</h2>
+    <p><strong>Management Intern</strong> - BharatGen Technologies (2025 - Present)</p>
+    <p><strong>Internship</strong> - Jun 2022 - Aug 2022</p>
+    <p>Achievements: Secured 3rd position with AttedX at Utkarsh Fest 2025; Shortlisted for Infosys Makeathon 6.0.</p>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="project-card">
+      <h3>Lucknow Explorer</h3>
+      <p>A tourist website to explore Lucknow, showcasing places, details, and timings. Built with HTML, CSS, and JavaScript.</p>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form class="contact-form" id="contact-form">
+      <input type="text" id="name" name="name" placeholder="Your Name" required>
+      <input type="email" id="email" name="email" placeholder="Your Email" required>
+      <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 Riddhi Jaiswal | Portfolio</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Toggle hamburger menu
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    // Contact form submit
+    document.getElementById("contact-form").addEventListener("submit", function(e) {
       e.preventDefault();
-      
-      fetch(scriptURL, {
+      fetch("YOUR_SCRIPT_URL_HERE", {
         method: "POST",
         body: JSON.stringify({
-          name: form.name.value,
-          email: form.email.value,
-          message: form.message.value
-        })
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          message: document.getElementById("message").value
+        }),
+        headers: { "Content-Type": "application/json" }
       })
-      .then(response => {
-        alert("✅ Message sent successfully!");
-        form.reset();
+      .then(res => res.json())
+      .then(data => {
+        alert("Message saved successfully!");
+        document.getElementById("contact-form").reset();
       })
-      .catch(error => {
-        alert("❌ Error sending message: " + error.message);
+      .catch(err => {
+        alert("Error! Please try again.");
+        console.error(err);
       });
     });
   </script>
+</body>
+</html>
