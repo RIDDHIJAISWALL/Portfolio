@@ -272,26 +272,34 @@
 
     // Contact form submit
 
+const scriptURL ="https://script.google.com/macros/s/AKfycbye_Hl6_nUTJAlz3_6GPZtRC96gj4cWtxJEQyJndXi2YNCATBgtsOwXvFNJEI4lno2VbQ/exec"; // Replace with your deployed Apps Script Web App URL
+    const form = document.getElementById("contact-form");
 
-
-
-
-const scriptURL = "YOUR-WEB-APP-URL"; // from deployment
-const form = document.getElementById("contact-form");
-
-form.addEventListener("submit", e => {
-  e.preventDefault();
-
-  fetch(scriptURL, { method: "POST", body: new FormData(form) })
-    .then(response => response.text())
-    .then(result => {
-      alert("✅ Message sent successfully!");
-      form.reset();
-    })
-    .catch(error => {
-      alert("❌ Error: " + error.message);
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({
+          name: form.name.value,
+          email: form.email.value,
+          message: form.message.value
+        })
+      })
+      .then(response => {
+        alert("✅ Message sent successfully!");
+        form.reset();
+      })
+      .catch(error => {
+        alert("❌ Error sending message: " + error.message);
+      });
     });
-});
+
+
+
+
+
+
 </script>
 
 
